@@ -2,6 +2,7 @@ package com.example.mobileapp.data.network;
 
 import com.example.mobileapp.data.model.ApiResponse;
 import com.example.mobileapp.data.model.ArtistResponse;
+import com.example.mobileapp.data.model.BookingHistoryResponse;
 import com.example.mobileapp.data.model.BookingReq;
 import com.example.mobileapp.data.model.CreateEventReq;
 import com.example.mobileapp.data.model.TicketListResponse;
@@ -66,5 +67,8 @@ public interface ApiService {
 
     @POST("/api/booking/book")
     Call<ApiResponse> bookTickets(String authHeader, BookingReq req);
+
+    @GET("api/booking/my-tickets")
+    Call<BookingHistoryResponse> getMyHistory(@Header("Authorization") String token);
 }
 
