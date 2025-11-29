@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etDialogName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ticket Name (e.g. Early Bird)"/>
+
+    <EditText
+        android:id="@+id/etDialogPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="Price"/>
+
+    <EditText
+        android:id="@+id/etDialogQty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Total Quantity"/>
+</LinearLayout>
