@@ -1,108 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
-    <!-- App Bar -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Top Bar Ticketbox -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:elevation="4dp">
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:background="#00C853">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp">
+        <TextView
+            android:id="@+id/tvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ticketbox"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TicketBox"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="16dp" />
+        <ImageView
+            android:id="@+id/btnSearch"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_search_24"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/outline_person_24"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="4dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Nội dung chính -->
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="8dp">
 
-            <!-- Banner Carousel -->
+            <!-- Banner Slider -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/bannerViewPager"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:clipToPadding="false"
                 android:clipChildren="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp" />
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp" />
 
-            <!-- Indicator -->
-            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-                android:id="@+id/dotsIndicator"
+            <!-- Dot Indicator -->
+            <LinearLayout
+                android:id="@+id/dotLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp"></LinearLayout>
 
-            <!-- Tiêu đề -->
+            <!-- Special Events -->
             <TextView
-                android:id="@+id/tvUpcoming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upcoming Events"
-                android:textStyle="bold"
+                android:text="Sự kiện đặc biệt"
                 android:textSize="20sp"
-                android:textColor="#000"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp" />
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"/>
 
-            <!-- RecyclerView hiển thị sự kiện -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerEvents"
+                android:id="@+id/rvSpecialEvents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:layout_height="220dp"
+                android:orientation="horizontal"
+                android:padding="4dp"/>
 
+            <!-- Trending Events -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sự kiện xu hướng"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrendingEvents"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:orientation="horizontal"
+                android:padding="4dp"/>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@android:color/white"
-        app:itemIconSize="28dp"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemActiveIndicatorStyle="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_gravity="bottom"/>
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:weightSum="3"
+        android:elevation="8dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/outline_home_24"
+                app:tint="#00C853" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trang chủ"
+                android:textSize="12sp"
+                android:textColor="#00C853" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnMyTickets"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:tint="#00C853"
+                android:src="@drawable/outline_aod_ticket_24" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vé của tôi"
+                android:textSize="12sp"
+                android:textColor="#00C853"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:tint="#00C853"
+                android:src="@drawable/outline_account_circle_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tài khoản"
+                android:textSize="12sp"
+                android:textColor="#00C853"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

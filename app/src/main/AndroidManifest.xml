@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,6 +24,37 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.LoginActivity" />
+        <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.ProfileActivity" />
+        <activity android:name=".ui.activity.MyTicketActivity" />
+        <activity android:name=".ui.activity.FeedbackActivity" />
+<!--        <activity android:name=".ui.activity.EventDetailActivity" />-->
+        <activity
+            android:name=".ui.activity.EventDetailActivity"
+            android:exported="true">
+
+            <!-- Custom scheme deep link -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="myapp" android:host="event" android:pathPattern="/.*" />
+            </intent-filter>
+
+            <!-- App Link / Universal Link (https) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="yourdomain.com"
+                    android:pathPrefix="/event/" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>
