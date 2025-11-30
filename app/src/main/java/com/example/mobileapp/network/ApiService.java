@@ -1,17 +1,16 @@
 package com.example.mobileapp.network;
 
-import com.example.mobileapp.data.model.Ticket;
-
-import java.util.List;
-
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.Body;
 
 public interface ApiService {
 
@@ -56,4 +55,34 @@ public interface ApiService {
     );
 
     // Nếu bạn muốn riêng API lấy vé
+    
+            // Organizer Register
+            @POST("api/organizer/register")
+            Call<ApiResponse> registerOrganizer(@Body com.example.mobileapp.ui.activity.OrganizerRegisterActivity.OrganizerRequest request);
+
+            // Create Event
+            @POST("api/organizer/events/create")
+            Call<ApiResponse> createEvent(@Body com.example.mobileapp.ui.activity.CreateEventActivity.CreateEventRequest request);
+
+            // Get Attendees
+            @GET("api/organizer/events/{id}/attendees")
+            Call<AttendeeResponse> getAttendees(@Path("id") int eventId);
+
+            // Import Excel (Multipart)
+            @Multipart
+            @POST("api/organizer/events/import")
+            Call<ApiResponse> importAttendees(
+                    @Part MultipartBody.Part file,
+                    @Part("event_id") RequestBody eventId,
+                    @Part("ticket_type_id") RequestBody ticketTypeId,
+                    @Part("price") RequestBody price
+            );
+
+            // Export Excel (Download)
+            @GET("api/organizer/events/{id}/export/excel")
+            Call<ResponseBody> exportExcel(@Path("id") int eventId);
+
+            // Export PDF (Download)
+            @GET("api/organizer/events/{id}/export/pdf")
+            Call<ResponseBody> exportPDF(@Path("id") int eventId);
 }

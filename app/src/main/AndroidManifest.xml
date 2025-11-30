@@ -54,6 +54,11 @@
             </intent-filter>
         </activity>
 
+        <!-- Activities added by assistant -->
+        <activity android:name=".ui.activity.OrganizerRegisterActivity" />
+        <activity android:name=".ui.activity.CreateEventActivity" />
+        <activity android:name=".ui.activity.EventManagerActivity" />
+
 
     </application>
 
