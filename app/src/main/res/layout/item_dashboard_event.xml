@@ -8,25 +8,32 @@
     android:layout_marginBottom="8dp">
 
     <TextView
-        android:id="@+id/tvAttendeeName"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Họ tên"
+        android:text="Event title"
         android:textStyle="bold"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/tvTicketInfo"
+        android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loại vé"
+        android:text="Time"
         android:layout_marginTop="2dp" />
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvSold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trạng thái"
+        android:text="Sold: 0"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvRevenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Revenue: 0"
         android:layout_marginTop="2dp" />
 
 </LinearLayout>

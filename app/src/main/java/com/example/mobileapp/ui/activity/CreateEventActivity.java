@@ -8,9 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mobileapp.R;
-import com.example.mobileapp.network.SimpleResponse;
+import com.example.mobileapp.network.ApiResponse;
 import com.example.mobileapp.network.ApiService;
 import com.example.mobileapp.network.RetrofitClient;
+import com.example.mobileapp.network.dto.CreateEventRequest;
+import com.example.mobileapp.network.dto.TicketTypeDto;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,24 +22,26 @@ import retrofit2.Response;
 
 public class CreateEventActivity extends AppCompatActivity {
 
-    private EditText etTitle, etDesc, etLocation, etThumbUrl;
-    private EditText etTicketName, etTicketPrice, etTicketQty;
+    private EditText etTitle, etDesc, etLocation, etThumbUrl, etCategoryId;
+    private EditText etTicketName, etTicketPrice, etTicketQty, etTicketDesc;
     private Button btnPickDate, btnCreate;
     private String selectedDateTime = ""; // Format: YYYY-MM-DD HH:mm:ss
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.activity_organizer_create_event);
 
         // Binding Views
         etTitle = findViewById(R.id.etEventTitle);
         etDesc = findViewById(R.id.etEventDesc);
         etLocation = findViewById(R.id.etLocation);
         etThumbUrl = findViewById(R.id.etImageUrl);
+        etCategoryId = findViewById(R.id.etCategoryId);
         etTicketName = findViewById(R.id.etTicketName);
         etTicketPrice = findViewById(R.id.etTicketPrice);
         etTicketQty = findViewById(R.id.etTicketQty);
+        etTicketDesc = findViewById(R.id.etTicketDesc);
         btnPickDate = findViewById(R.id.btnPickDate);
         btnCreate = findViewById(R.id.btnCreateEvent);
 
@@ -65,11 +69,12 @@ public class CreateEventActivity extends AppCompatActivity {
             return;
         }
 
-        List<TicketType> tickets = new ArrayList<>();
-        tickets.add(new TicketType(
-                etTicketName.getText().toString(),
-                Double.parseDouble(etTicketPrice.getText().toString().isEmpty() ? "0" : etTicketPrice.getText().toString()),
-                Integer.parseInt(etTicketQty.getText().toString().isEmpty() ? "0" : etTicketQty.getText().toString())
+        List<TicketTypeDto> tickets = new ArrayList<>();
+        tickets.add(new TicketTypeDto(
+            etTicketName.getText().toString(),
+            Double.parseDouble(etTicketPrice.getText().toString().isEmpty() ? "0" : etTicketPrice.getText().toString()),
+            Integer.parseInt(etTicketQty.getText().toString().isEmpty() ? "0" : etTicketQty.getText().toString()),
+            null
         ));
 
         CreateEventRequest request = new CreateEventRequest();
@@ -78,11 +83,22 @@ public class CreateEventActivity extends AppCompatActivity {
         request.start_time = selectedDateTime;
         request.location_name = etLocation.getText().toString();
         request.thumbnail_url = etThumbUrl.getText().toString();
-        request.category_id = 1;
+        try {
+            request.category_id = Integer.parseInt(etCategoryId.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            request.category_id = 1;
+        }
         request.ticket_types = tickets;
 
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-        apiService.createEvent(request).enqueue(new Callback<ApiResponse>() {
+
+        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        if (token.isEmpty()) {
+            Toast.makeText(this, "Vui lòng đăng nhập tổ chức", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        apiService.createEvent("Bearer " + token, request).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
@@ -98,18 +114,5 @@ public class CreateEventActivity extends AppCompatActivity {
                 Toast.makeText(CreateEventActivity.this, "Lỗi server", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public static class CreateEventRequest {
-        public String title, description, start_time, location_name, thumbnail_url;
-        public int category_id;
-        public List<TicketType> ticket_types;
-    }
-
-    public static class TicketType {
-        public String name;
-        public double price;
-        public int quantity;
-        TicketType(String n, double p, int q) { name = n; price = p; quantity = q; }
     }
 }

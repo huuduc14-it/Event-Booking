@@ -8,11 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobileapp.R;
 import com.example.mobileapp.data.model.Attendee;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.VH> {
-    private final List<Attendee> items;
-    public AttendeeAdapter(List<Attendee> items) { this.items = items; }
+    private final List<Attendee> items = new ArrayList<>();
+
+    public void setItems(List<Attendee> data) {
+        items.clear();
+        if (data != null) items.addAll(data);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -25,12 +31,17 @@ public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.VH> {
     public void onBindViewHolder(@NonNull VH holder, int position) {
         Attendee a = items.get(position);
         holder.name.setText(a.full_name != null ? a.full_name : "-");
-        holder.ticketInfo.setText(a.ticket_info != null ? a.ticket_info : "");
-        holder.status.setText(a.status != null ? a.status : "");
+        String ticketLine = a.ticket_type != null ? a.ticket_type : a.ticket_info;
+        if (a.price > 0) {
+            ticketLine = (ticketLine == null ? "" : ticketLine + " • ") + a.price;
+        }
+        holder.ticketInfo.setText(ticketLine != null ? ticketLine : "");
+        String statusLine = a.qr_code != null ? ("QR: " + a.qr_code) : "";
+        holder.status.setText(statusLine);
     }
 
     @Override
-    public int getItemCount() { return items == null ? 0 : items.size(); }
+    public int getItemCount() { return items.size(); }
 
     static class VH extends RecyclerView.ViewHolder {
         TextView name, ticketInfo, status;
@@ -38,7 +49,7 @@ public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.VH> {
             super(itemView);
             name = itemView.findViewById(R.id.tvAttendeeName);
             ticketInfo = itemView.findViewById(R.id.tvTicketInfo);
-            status = itemView.findViewById(R.id.tvCheckInStatus);
+            status = itemView.findViewById(R.id.tvStatus);
         }
     }
 }

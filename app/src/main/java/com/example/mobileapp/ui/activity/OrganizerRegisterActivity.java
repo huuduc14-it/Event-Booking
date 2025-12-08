@@ -6,9 +6,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mobileapp.R;
-import com.example.mobileapp.network.SimpleResponse;
+import android.content.SharedPreferences;
+import com.example.mobileapp.network.ApiResponse;
 import com.example.mobileapp.network.ApiService;
 import com.example.mobileapp.network.RetrofitClient;
+import com.example.mobileapp.network.dto.OrganizerRegisterRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,9 +40,15 @@ public class OrganizerRegisterActivity extends AppCompatActivity {
 
     private void registerOrganizer(String orgName) {
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-        OrganizerRequest request = new OrganizerRequest(orgName);
+        OrganizerRegisterRequest request = new OrganizerRegisterRequest(orgName);
 
-        apiService.registerOrganizer(request).enqueue(new Callback<ApiResponse>() {
+        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        if (token.isEmpty()) {
+            Toast.makeText(this, "Vui lòng đăng nhập trước", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        apiService.registerOrganizer("Bearer " + token, request).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -56,10 +64,5 @@ public class OrganizerRegisterActivity extends AppCompatActivity {
                 Toast.makeText(OrganizerRegisterActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public static class OrganizerRequest {
-        String organization_name;
-        public OrganizerRequest(String name) { this.organization_name = name; }
     }
 }

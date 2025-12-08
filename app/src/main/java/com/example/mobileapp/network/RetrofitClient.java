@@ -10,7 +10,7 @@ public class RetrofitClient {
     public static Retrofit getInstance() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:3000/api/") // đổi IP của bạn
+                    .baseUrl("http://10.0.2.2:3000/") // đổi IP nếu chạy trên thiết bị thật
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
