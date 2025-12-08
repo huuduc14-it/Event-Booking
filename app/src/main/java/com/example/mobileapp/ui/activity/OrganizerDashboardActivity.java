@@ -36,7 +36,17 @@ public class OrganizerDashboardActivity extends AppCompatActivity {
 		progressBar = findViewById(R.id.progressBar);
 		tvError = findViewById(R.id.tvError);
 
-		adapter = new DashboardAdapter(this::openAttendees);
+		adapter = new DashboardAdapter(new DashboardAdapter.OnItemClick() {
+			@Override
+			public void onClick(DashboardEvent item) {
+				openAttendees(item);
+			}
+
+			@Override
+			public void onEditClick(DashboardEvent item) {
+				openEditEvent(item);
+			}
+		});
 		rv.setLayoutManager(new LinearLayoutManager(this));
 		rv.setAdapter(adapter);
 	}
@@ -92,6 +102,18 @@ public class OrganizerDashboardActivity extends AppCompatActivity {
 		Intent i = new Intent(this, OrganizerAttendeeListActivity.class);
 		i.putExtra("EVENT_ID", event.event_id);
 		i.putExtra("EVENT_TITLE", event.title);
+		startActivity(i);
+	}
+
+	private void openEditEvent(DashboardEvent event) {
+		Intent i = new Intent(this, OrganizerEditEventActivity.class);
+		i.putExtra("EVENT_ID", event.event_id);
+		i.putExtra("TITLE", event.title);
+		i.putExtra("DESCRIPTION", event.description != null ? event.description : "");
+		i.putExtra("LOCATION", event.location != null ? event.location : "");
+		i.putExtra("START_TIME", event.start_time != null ? event.start_time : "");
+		i.putExtra("IMAGE_URL", event.image_url != null ? event.image_url : "");
+		i.putExtra("CATEGORY_ID", event.category_id);
 		startActivity(i);
 	}
 }

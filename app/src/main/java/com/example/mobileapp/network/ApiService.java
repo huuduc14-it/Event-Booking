@@ -1,6 +1,7 @@
 package com.example.mobileapp.network;
 
 import com.example.mobileapp.network.dto.CreateEventRequest;
+import com.example.mobileapp.network.dto.OrganizerProfileUpdateRequest;
 import com.example.mobileapp.network.dto.OrganizerRegisterRequest;
 
 import okhttp3.MultipartBody;
@@ -14,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -75,8 +77,15 @@ public interface ApiService {
             @Body CreateEventRequest request
     );
 
-        @GET("api/organizer/dashboard")
-        Call<DashboardResponse> getDashboard(@Header("Authorization") String token);
+    @GET("api/organizer/dashboard")
+    Call<DashboardResponse> getDashboard(@Header("Authorization") String token);
+
+    @PUT("api/organizer/events/{event_id}")
+    Call<ApiResponse> updateEvent(
+            @Header("Authorization") String token,
+            @Path("event_id") int eventId,
+            @Body CreateEventRequest request
+    );
 
     @GET("api/organizer/events/{id}/attendees")
     Call<AttendeeResponse> getAttendees(
@@ -104,5 +113,11 @@ public interface ApiService {
     Call<ResponseBody> exportPDF(
             @Header("Authorization") String token,
             @Path("id") int eventId
+    );
+
+    @PUT("api/organizer/profile")
+    Call<ApiResponse> updateOrganizerProfile(
+            @Header("Authorization") String token,
+            @Body OrganizerProfileUpdateRequest request
     );
 }

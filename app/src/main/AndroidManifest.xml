@@ -63,6 +63,7 @@
         <activity android:name=".ui.activity.OrganizerDashboardActivity" />
         <activity android:name=".ui.activity.OrganizerAttendeeListActivity" />
         <activity android:name=".ui.activity.OrganizerManageTicketActivity" />
+        <activity android:name=".ui.activity.OrganizerEditEventActivity" />
 
 
     </application>

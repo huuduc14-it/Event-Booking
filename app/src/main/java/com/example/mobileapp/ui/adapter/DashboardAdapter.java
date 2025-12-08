@@ -3,6 +3,7 @@ package com.example.mobileapp.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     public interface OnItemClick {
         void onClick(DashboardEvent item);
+        void onEditClick(DashboardEvent item);
     }
 
     private final List<DashboardEvent> items = new ArrayList<>();
@@ -45,6 +47,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         holder.tvSold.setText("Sold: " + item.total_tickets_sold);
         holder.tvRevenue.setText("Revenue: " + item.total_revenue);
         holder.itemView.setOnClickListener(v -> listener.onClick(item));
+        holder.btnEdit.setOnClickListener(v -> listener.onEditClick(item));
     }
 
     @Override
@@ -54,12 +57,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     static class DashboardVH extends RecyclerView.ViewHolder {
         TextView tvTitle, tvTime, tvSold, tvRevenue;
+        Button btnEdit;
         DashboardVH(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvSold = itemView.findViewById(R.id.tvSold);
             tvRevenue = itemView.findViewById(R.id.tvRevenue);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
         }
     }
 }
