@@ -1,14 +1,21 @@
 package com.example.mobileapp.network;
 
+import com.example.mobileapp.network.dto.BookingRequest;
+import com.example.mobileapp.network.dto.BookingResponse;
+import com.example.mobileapp.network.dto.BookingListResponse;
+import com.example.mobileapp.network.dto.CheckInRequest;
+import com.example.mobileapp.network.dto.CheckInResponse;
 import com.example.mobileapp.network.dto.CreateEventRequest;
 import com.example.mobileapp.network.dto.OrganizerProfileUpdateRequest;
 import com.example.mobileapp.network.dto.OrganizerRegisterRequest;
+import com.example.mobileapp.network.dto.TicketTypeResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -119,5 +126,50 @@ public interface ApiService {
     Call<ApiResponse> updateOrganizerProfile(
             @Header("Authorization") String token,
             @Body OrganizerProfileUpdateRequest request
+    );
+
+    // Booking endpoints
+    @GET("api/events/{event_id}/ticket-types")
+    Call<TicketTypeResponse> getTicketTypes(@Path("event_id") int eventId);
+
+    @POST("api/bookings")
+    Call<BookingResponse> createBooking(
+            @Header("Authorization") String token,
+            @Body BookingRequest request
+    );
+
+    @GET("api/bookings")
+    Call<BookingListResponse> getMyBookings(@Header("Authorization") String token);
+
+    @GET("api/bookings/{booking_id}")
+    Call<BookingResponse> getBookingDetail(
+            @Header("Authorization") String token,
+            @Path("booking_id") int bookingId
+    );
+
+    @POST("api/bookings/confirm-payment")
+    @FormUrlEncoded
+    Call<ApiResponse> confirmPayment(
+            @Header("Authorization") String token,
+            @Field("booking_id") int bookingId
+    );
+
+    @DELETE("api/bookings/{booking_id}")
+    Call<ApiResponse> cancelBooking(
+            @Header("Authorization") String token,
+            @Path("booking_id") int bookingId
+    );
+
+    // Check-in endpoint
+    @POST("api/tickets/check-in")
+    Call<CheckInResponse> checkInTicket(@Body CheckInRequest request);
+
+    // Update ticket quantity (Organizer)
+    @PUT("api/ticket-types/update-quantity")
+    @FormUrlEncoded
+    Call<ApiResponse> updateTicketQuantity(
+            @Header("Authorization") String token,
+            @Field("ticket_type_id") int ticketTypeId,
+            @Field("new_quantity") int newQuantity
     );
 }
