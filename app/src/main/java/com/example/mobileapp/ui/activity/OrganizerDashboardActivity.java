@@ -16,6 +16,7 @@ import com.example.mobileapp.network.ApiService;
 import com.example.mobileapp.network.DashboardResponse;
 import com.example.mobileapp.network.RetrofitClient;
 import com.example.mobileapp.ui.adapter.DashboardAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +27,7 @@ public class OrganizerDashboardActivity extends AppCompatActivity {
 	private DashboardAdapter adapter;
 	private ProgressBar progressBar;
 	private TextView tvError;
+	private FloatingActionButton fabCreateEvent;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +37,13 @@ public class OrganizerDashboardActivity extends AppCompatActivity {
 		RecyclerView rv = findViewById(R.id.rvDashboard);
 		progressBar = findViewById(R.id.progressBar);
 		tvError = findViewById(R.id.tvError);
+		fabCreateEvent = findViewById(R.id.fabCreateEvent);
+
+		// FAB click - mở màn hình tạo sự kiện
+		fabCreateEvent.setOnClickListener(v -> {
+			Intent intent = new Intent(OrganizerDashboardActivity.this, CreateEventActivity.class);
+			startActivity(intent);
+		});
 
 		adapter = new DashboardAdapter(new DashboardAdapter.OnItemClick() {
 			@Override

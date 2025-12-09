@@ -5,12 +5,18 @@ public class BookingResponse {
     public String message;
     public BookingData data;
 
+    public boolean isSuccess() { return success; }
+    public BookingData getData() { return data; }
+
     public static class BookingData {
         public int booking_id;
         public double total_amount;
         public String payment_status;
         public BookingInfo booking_info;
         public TicketInfo[] tickets;
+
+        public int getBookingId() { return booking_id; }
+        public double getTotalAmount() { return total_amount; }
     }
 
     public static class BookingInfo {

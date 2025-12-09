@@ -5,13 +5,9 @@
     android:background="#FFFFFF">
 
     <!-- Scroll nội dung -->
-
-    <!-- Nút mua vé nằm dưới cố định -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnBuy"
-        android:layout_marginBottom="26dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -169,6 +165,10 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- ======================= CODE THAM KHẢO: NÚT MUA VÉ (USER BRANCH) =======================
+    Thành viên phụ trách User có thể uncomment đoạn này và thêm android:layout_above="@+id/btnBuy" 
+    vào ScrollView phía trên để sử dụng tính năng mua vé
+    
     <Button
         android:id="@+id/btnBuy"
         android:layout_width="match_parent"
@@ -179,5 +179,6 @@
         android:background="#FF5722"
         android:layout_alignParentBottom="true"
         android:fontFamily="sans-serif-medium"/>
+    ========================================================================================= -->
 
 </RelativeLayout>

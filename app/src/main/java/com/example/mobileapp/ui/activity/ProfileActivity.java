@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tvUserName, tvEmail, tvPhone;
     RecyclerView rvTickets;
     Toolbar toolbar;
-    Button btnLogout;
+    Button btnLogout, btnRegisterOrganizer, btnManageEvents;
     TicketAdapter ticketAdapter;
     List<Ticket> ticketList = new ArrayList<>();
     private static final int REQUEST_IMAGE_CAPTURE = 100;
@@ -139,8 +139,53 @@ public class ProfileActivity extends AppCompatActivity {
             finish(); // đóng ProfileActivity
         });
 
+        // Organizer buttons
+        btnRegisterOrganizer = findViewById(R.id.btnRegisterOrganizer);
+        btnManageEvents = findViewById(R.id.btnManageEvents);
+
+        btnRegisterOrganizer.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, OrganizerRegisterActivity.class);
+            startActivity(intent);
+        });
+
+        btnManageEvents.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, OrganizerDashboardActivity.class);
+            startActivity(intent);
+        });
+
+        // Check if user is organizer to show/hide buttons
+        checkOrganizerStatus(token);
+
 
     }
+
+    private void checkOrganizerStatus(String token) {
+        if (token == null) return;
+        
+        // Call API to check organizer status via dashboard endpoint
+        apiService.getDashboard("Bearer " + token).enqueue(new Callback<com.example.mobileapp.network.DashboardResponse>() {
+            @Override
+            public void onResponse(Call<com.example.mobileapp.network.DashboardResponse> call, Response<com.example.mobileapp.network.DashboardResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().success) {
+                    // User is organizer - show manage button, hide register button
+                    btnRegisterOrganizer.setVisibility(android.view.View.GONE);
+                    btnManageEvents.setVisibility(android.view.View.VISIBLE);
+                } else {
+                    // User is not organizer - show register button, hide manage button
+                    btnRegisterOrganizer.setVisibility(android.view.View.VISIBLE);
+                    btnManageEvents.setVisibility(android.view.View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.example.mobileapp.network.DashboardResponse> call, Throwable t) {
+                // Default: show register button
+                btnRegisterOrganizer.setVisibility(android.view.View.VISIBLE);
+                btnManageEvents.setVisibility(android.view.View.GONE);
+            }
+        });
+    }
+
     private void openCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {

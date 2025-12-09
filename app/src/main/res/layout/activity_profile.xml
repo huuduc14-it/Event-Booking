@@ -75,6 +75,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Nút Đăng ký Organizer -->
+    <Button
+        android:id="@+id/btnRegisterOrganizer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký làm Organizer"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tvPhone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Nút Quản lý sự kiện (chỉ hiện khi là Organizer) -->
+    <Button
+        android:id="@+id/btnManageEvents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Quản lý sự kiện"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2196F3"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnRegisterOrganizer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Nút Logout nằm dưới cùng -->
     <Button
         android:id="@+id/btnLogout"

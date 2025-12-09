@@ -1,60 +1,3 @@
-//package com.example.mobileapp.ui.activity;
-//
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.view.Menu;
-//import android.view.MenuItem;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.appcompat.widget.Toolbar;
-//import com.example.mobileapp.R;
-//public class EventDetailActivity extends AppCompatActivity {
-//
-//    Toolbar toolbar;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_event_detail);
-//
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        // Hiển thị nút quay về (arrow back)
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setTitle("Chi tiết sự kiện");
-//
-//        // Sự kiện khi nhấn nút back
-//        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-//    }
-//
-//    // Load menu share
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_event_detail, menu);
-//        return true;
-//    }
-//
-//    // Sự kiện click nút menu
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.action_share) {
-//            shareEvent();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void shareEvent() {
-//        String text = "Check out this event on my app!";
-//
-//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        shareIntent.setType("text/plain");
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-//
-//        startActivity(Intent.createChooser(shareIntent, "Chia sẻ qua"));
-//    }
-//}
-//
 package com.example.mobileapp.ui.activity;
 
 import android.os.Bundle;
@@ -73,18 +16,39 @@ import com.example.mobileapp.network.EventDetailResponse;
 import com.example.mobileapp.network.RetrofitClient;
 import com.example.mobileapp.network.ApiService;
 
-import org.json.JSONObject;
 import org.jspecify.annotations.NonNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/// ======================= CODE THAM KHẢO CHO TÍNH NĂNG MUA VÉ (USER BRANCH) =======================
+/// Thêm các import sau nếu muốn dùng tính năng mua vé:
+// import android.content.SharedPreferences;
+// import android.widget.Button;
+// import android.widget.Toast;
+// import android.widget.NumberPicker;
+// import android.widget.Spinner;
+// import android.widget.ArrayAdapter;
+// import android.app.AlertDialog;
+// import android.view.LayoutInflater;
+// import android.view.View;
+// import com.example.mobileapp.network.dto.TicketTypeResponse;
+// import com.example.mobileapp.network.dto.BookingRequest;
+// import com.example.mobileapp.network.dto.BookingResponse;
+// import java.util.ArrayList;
+// import java.util.List;
+/// =================================================================================================
+
 public class EventDetailActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView tvTitle, tvLocation, tvAddress, tvTime, tvEndTime, tvDescription, tvVideoUrl;
     ImageView imgThumbnail;
+
+    /// CODE THAM KHẢO: Thêm biến cho tính năng mua vé
+    // Button btnBuy;
+    // List<TicketTypeResponse.TicketType> ticketTypes = new ArrayList<>();
 
     int eventId; // nhận từ intent
     ApiService apiService;
@@ -121,7 +85,142 @@ public class EventDetailActivity extends AppCompatActivity {
 
         // Load dữ liệu
         loadEventDetail(eventId);
+
+        /// ======================= CODE THAM KHẢO: SETUP NÚT MUA VÉ =======================
+        /// Cần thêm Button btnBuy trong layout activity_event_detail.xml
+        /// <Button android:id="@+id/btnBuy" android:layout_width="match_parent" 
+        ///         android:layout_height="60dp" android:text="MUA VÉ" 
+        ///         android:background="#FF5722" android:textColor="#FFFFFF"
+        ///         android:layout_alignParentBottom="true"/>
+        //
+        // btnBuy = findViewById(R.id.btnBuy);
+        // btnBuy.setOnClickListener(v -> {
+        //     SharedPreferences prefs = getSharedPreferences("AUTH", MODE_PRIVATE);
+        //     String token = prefs.getString("TOKEN", null);
+        //     
+        //     if (token == null) {
+        //         Toast.makeText(this, "Vui lòng đăng nhập để mua vé", Toast.LENGTH_SHORT).show();
+        //         startActivity(new Intent(this, LoginActivity.class));
+        //         return;
+        //     }
+        //     
+        //     // Load ticket types and show dialog
+        //     loadTicketTypesAndShowDialog(token);
+        // });
+        /// =================================================================================
     }
+
+    /// ======================= CODE THAM KHẢO: CÁC METHOD MUA VÉ =======================
+    //
+    // private void loadTicketTypesAndShowDialog(String token) {
+    //     apiService.getTicketTypes(eventId).enqueue(new Callback<TicketTypeResponse>() {
+    //         @Override
+    //         public void onResponse(Call<TicketTypeResponse> call, Response<TicketTypeResponse> response) {
+    //             if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+    //                 ticketTypes = response.body().getData();
+    //                 if (ticketTypes != null && !ticketTypes.isEmpty()) {
+    //                     showTicketSelectionDialog(token);
+    //                 } else {
+    //                     Toast.makeText(EventDetailActivity.this, "Không có loại vé nào", Toast.LENGTH_SHORT).show();
+    //                 }
+    //             } else {
+    //                 Toast.makeText(EventDetailActivity.this, "Không thể tải thông tin vé", Toast.LENGTH_SHORT).show();
+    //             }
+    //         }
+    //
+    //         @Override
+    //         public void onFailure(Call<TicketTypeResponse> call, Throwable t) {
+    //             Toast.makeText(EventDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+    //         }
+    //     });
+    // }
+    //
+    // private void showTicketSelectionDialog(String token) {
+    //     AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    //     builder.setTitle("Chọn loại vé");
+    //     
+    //     // Create ticket type names array
+    //     String[] ticketNames = new String[ticketTypes.size()];
+    //     for (int i = 0; i < ticketTypes.size(); i++) {
+    //         TicketTypeResponse.TicketType tt = ticketTypes.get(i);
+    //         ticketNames[i] = tt.getName() + " - " + String.format("%,.0f", tt.getPrice()) + "đ (Còn: " + tt.getRemaining() + ")";
+    //     }
+    //     
+    //     final int[] selectedIndex = {0};
+    //     final int[] quantity = {1};
+    //     
+    //     View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ticket_selection, null);
+    //     Spinner spinnerTicketType = dialogView.findViewById(R.id.spinnerTicketType);
+    //     NumberPicker numberPickerQty = dialogView.findViewById(R.id.numberPickerQty);
+    //     
+    //     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ticketNames);
+    //     spinnerTicketType.setAdapter(adapter);
+    //     
+    //     numberPickerQty.setMinValue(1);
+    //     numberPickerQty.setMaxValue(10);
+    //     numberPickerQty.setValue(1);
+    //     
+    //     spinnerTicketType.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+    //         @Override
+    //         public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+    //             selectedIndex[0] = position;
+    //             int maxQty = Math.min(10, ticketTypes.get(position).getRemaining());
+    //             numberPickerQty.setMaxValue(maxQty > 0 ? maxQty : 1);
+    //         }
+    //         @Override
+    //         public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+    //     });
+    //     
+    //     numberPickerQty.setOnValueChangedListener((picker, oldVal, newVal) -> quantity[0] = newVal);
+    //     
+    //     builder.setView(dialogView);
+    //     builder.setPositiveButton("Đặt vé", (dialog, which) -> {
+    //         TicketTypeResponse.TicketType selectedTicket = ticketTypes.get(selectedIndex[0]);
+    //         createBooking(token, selectedTicket, quantity[0]);
+    //     });
+    //     builder.setNegativeButton("Hủy", null);
+    //     builder.show();
+    // }
+    //
+    // private void createBooking(String token, TicketTypeResponse.TicketType ticketType, int quantity) {
+    //     BookingRequest request = new BookingRequest();
+    //     request.event_id = eventId;
+    //     request.items = new ArrayList<>();
+    //     
+    //     BookingRequest.BookingItem item = new BookingRequest.BookingItem();
+    //     item.ticket_type_id = ticketType.getTicketTypeId();
+    //     item.quantity = quantity;
+    //     request.items.add(item);
+    //     
+    //     apiService.createBooking("Bearer " + token, request).enqueue(new Callback<BookingResponse>() {
+    //         @Override
+    //         public void onResponse(Call<BookingResponse> call, Response<BookingResponse> response) {
+    //             if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+    //                 Toast.makeText(EventDetailActivity.this, "Đặt vé thành công!", Toast.LENGTH_SHORT).show();
+    //                 
+    //                 // Navigate to Payment Activity
+    //                 Intent intent = new Intent(EventDetailActivity.this, PaymentActivity.class);
+    //                 intent.putExtra("BOOKING_ID", response.body().getData().getBookingId());
+    //                 intent.putExtra("TOTAL_AMOUNT", response.body().getData().getTotalAmount());
+    //                 startActivity(intent);
+    //             } else {
+    //                 String errorMsg = "Lỗi đặt vé";
+    //                 try {
+    //                     if (response.errorBody() != null) {
+    //                         errorMsg = response.errorBody().string();
+    //                     }
+    //                 } catch (Exception e) {}
+    //                 Toast.makeText(EventDetailActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+    //             }
+    //         }
+    //
+    //         @Override
+    //         public void onFailure(Call<BookingResponse> call, Throwable t) {
+    //             Toast.makeText(EventDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+    //         }
+    //     });
+    // }
+    /// =================================================================================
 
     private void loadEventDetail(int id) {
         apiService.getEventDetail(eventId).enqueue(new Callback<EventDetailResponse>() {
