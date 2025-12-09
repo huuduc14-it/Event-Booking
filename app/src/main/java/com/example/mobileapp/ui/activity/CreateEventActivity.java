@@ -3,13 +3,17 @@ package com.example.mobileapp.ui.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mobileapp.R;
+import com.example.mobileapp.data.model.Category;
 import com.example.mobileapp.network.ApiResponse;
 import com.example.mobileapp.network.ApiService;
+import com.example.mobileapp.network.CategoryResponse;
 import com.example.mobileapp.network.RetrofitClient;
 import com.example.mobileapp.network.dto.CreateEventRequest;
 import com.example.mobileapp.network.dto.TicketTypeDto;
@@ -22,10 +26,14 @@ import retrofit2.Response;
 
 public class CreateEventActivity extends AppCompatActivity {
 
-    private EditText etTitle, etDesc, etLocation, etThumbUrl, etCategoryId;
+    private EditText etTitle, etDesc, etLocation, etAddress, etThumbUrl, etVideoUrl;
     private EditText etTicketName, etTicketPrice, etTicketQty, etTicketDesc;
-    private Button btnPickDate, btnCreate;
-    private String selectedDateTime = ""; // Format: YYYY-MM-DD HH:mm:ss
+    private Spinner spinnerCategory;
+    private Button btnPickStartDate, btnPickEndDate, btnCreate;
+    private String selectedStartDateTime = ""; // Format: YYYY-MM-DD HH:mm:ss
+    private String selectedEndDateTime = "";
+    private List<Category> categories = new ArrayList<>();
+    private ArrayAdapter<Category> categoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +44,62 @@ public class CreateEventActivity extends AppCompatActivity {
         etTitle = findViewById(R.id.etEventTitle);
         etDesc = findViewById(R.id.etEventDesc);
         etLocation = findViewById(R.id.etLocation);
+        etAddress = findViewById(R.id.etAddress);
         etThumbUrl = findViewById(R.id.etImageUrl);
-        etCategoryId = findViewById(R.id.etCategoryId);
+        etVideoUrl = findViewById(R.id.etVideoUrl);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
         etTicketName = findViewById(R.id.etTicketName);
         etTicketPrice = findViewById(R.id.etTicketPrice);
         etTicketQty = findViewById(R.id.etTicketQty);
         etTicketDesc = findViewById(R.id.etTicketDesc);
-        btnPickDate = findViewById(R.id.btnPickDate);
+        btnPickStartDate = findViewById(R.id.btnPickStartDate);
+        btnPickEndDate = findViewById(R.id.btnPickEndDate);
         btnCreate = findViewById(R.id.btnCreateEvent);
 
-        btnPickDate.setOnClickListener(v -> showDateTimePicker());
+        // Setup category spinner
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(categoryAdapter);
 
+        btnPickStartDate.setOnClickListener(v -> showDateTimePicker(true));
+        btnPickEndDate.setOnClickListener(v -> showDateTimePicker(false));
         btnCreate.setOnClickListener(v -> createEvent());
+
+        loadCategories();
     }
 
-    private void showDateTimePicker() {
+    private void loadCategories() {
+        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        apiService.getAllCategories().enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    categories.clear();
+                    categories.addAll(response.body().getData());
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Toast.makeText(CreateEventActivity.this, "Không thể tải danh mục", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showDateTimePicker(boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
             new TimePickerDialog(this, (timeView, hourOfDay, minute) -> {
-                selectedDateTime = String.format("%d-%02d-%02d %02d:%02d:00", 
+                String dateTime = String.format("%d-%02d-%02d %02d:%02d:00", 
                         year, month + 1, dayOfMonth, hourOfDay, minute);
-                btnPickDate.setText(selectedDateTime);
+                if (isStartDate) {
+                    selectedStartDateTime = dateTime;
+                    btnPickStartDate.setText("Start: " + dateTime);
+                } else {
+                    selectedEndDateTime = dateTime;
+                    btnPickEndDate.setText("End: " + dateTime);
+                }
             }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -64,7 +107,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private void createEvent() {
         String title = etTitle.getText().toString().trim();
 
-        if (title.isEmpty() || selectedDateTime.isEmpty()) {
+        if (title.isEmpty() || selectedStartDateTime.isEmpty()) {
             Toast.makeText(this, "Thiếu thông tin bắt buộc", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -80,14 +123,15 @@ public class CreateEventActivity extends AppCompatActivity {
         CreateEventRequest request = new CreateEventRequest();
         request.title = title;
         request.description = etDesc.getText().toString();
-        request.start_time = selectedDateTime;
+        request.start_time = selectedStartDateTime;
+        request.end_time = selectedEndDateTime.isEmpty() ? null : selectedEndDateTime;
         request.location_name = etLocation.getText().toString();
+        request.address = etAddress.getText().toString();
         request.thumbnail_url = etThumbUrl.getText().toString();
-        try {
-            request.category_id = Integer.parseInt(etCategoryId.getText().toString().trim());
-        } catch (NumberFormatException e) {
-            request.category_id = 1;
-        }
+        request.video_url = etVideoUrl.getText().toString();
+        
+        Category selectedCategory = (Category) spinnerCategory.getSelectedItem();
+        request.category_id = selectedCategory != null ? selectedCategory.getCategory_id() : 1;
         request.ticket_types = tickets;
 
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);

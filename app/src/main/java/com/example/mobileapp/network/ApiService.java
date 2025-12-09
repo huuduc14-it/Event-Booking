@@ -56,6 +56,12 @@ public interface ApiService {
             @Query("date") String date,
             @Query("category_id") Integer categoryId);
 
+    @GET("api/categories")
+    Call<CategoryResponse> getAllCategories();
+
+    @GET("api/categories/{id}")
+    Call<CategoryResponse> getCategoryById(@Path("id") int categoryId);
+
     @GET("api/profile/me")
     Call<ProfileResponse> getProfile(@Header("Authorization") String token);
 

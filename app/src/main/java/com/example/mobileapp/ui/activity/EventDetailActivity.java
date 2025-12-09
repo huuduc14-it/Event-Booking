@@ -83,7 +83,7 @@ import retrofit2.Response;
 public class EventDetailActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    TextView tvTitle, tvLocation, tvTime, tvDescription;
+    TextView tvTitle, tvLocation, tvAddress, tvTime, tvEndTime, tvDescription, tvVideoUrl;
     ImageView imgThumbnail;
 
     int eventId; // nhận từ intent
@@ -105,8 +105,11 @@ public class EventDetailActivity extends AppCompatActivity {
         imgThumbnail = findViewById(R.id.imgBanner);
         tvTitle = findViewById(R.id.tvEventTitle);
         tvLocation = findViewById(R.id.tvEventLocation);
+        tvAddress = findViewById(R.id.tvEventAddress);
         tvTime = findViewById(R.id.tvEventTime);
+        tvEndTime = findViewById(R.id.tvEventEndTime);
         tvDescription = findViewById(R.id.tvEventDescription);
+        tvVideoUrl = findViewById(R.id.tvVideoUrl);
 
         // Nhận eventId từ Intent
         eventId = getIntent().getIntExtra("event_id", -1);
@@ -130,12 +133,31 @@ public class EventDetailActivity extends AppCompatActivity {
 
                         tvTitle.setText(event.getTitle());
                         tvLocation.setText(event.getLocationName());
+                        
+                        String address = event.getAddress();
+                        if (address != null && !address.isEmpty()) {
+                            tvAddress.setText(address);
+                        } else {
+                            tvAddress.setText("Chưa có địa chỉ chi tiết");
+                        }
+                        
                         tvTime.setText(event.getStart_time().replace("T", " ").replace(".000Z", ""));
+                        
+                        String endTime = event.getEnd_time();
+                        if (endTime != null && !endTime.isEmpty()) {
+                            tvEndTime.setText("Kết thúc: " + endTime.replace("T", " ").replace(".000Z", ""));
+                        } else {
+                            tvEndTime.setText("");
+                        }
+                        
                         tvDescription.setText(event.getDescription());
-//                        tvTitle.setText(title);
-//                        tvLocation.setText(location);
-//                        tvTime.setText(startTime.replace("T", " ").replace(".000Z", ""));
-//                        tvDescription.setText(description);
+                        
+                        String videoUrl = event.getVideo_url();
+                        if (videoUrl != null && !videoUrl.isEmpty()) {
+                            tvVideoUrl.setText("Video: " + videoUrl);
+                        } else {
+                            tvVideoUrl.setText("");
+                        }
 
                         Glide.with(EventDetailActivity.this)
                                 .load(event.getThumbnail_url())

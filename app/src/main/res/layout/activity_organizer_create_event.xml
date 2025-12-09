@@ -40,6 +40,13 @@
             android:layout_marginTop="8dp" />
 
         <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Địa chỉ chi tiết"
+            android:layout_marginTop="8dp" />
+
+        <EditText
             android:id="@+id/etImageUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,26 +54,44 @@
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/etCategoryId"
+            android:id="@+id/etVideoUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Category ID"
-            android:inputType="number"
+            android:hint="Video URL (optional)"
             android:layout_marginTop="8dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danh mục"
+            android:layout_marginTop="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
+
         <Button
-            android:id="@+id/btnPickDate"
+            android:id="@+id/btnPickStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Chọn thời gian bắt đầu"
             android:layout_marginTop="12dp" />
 
-        <TextView
-            android:id="@+id/tvPickedDate"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btnPickEndDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chưa chọn"
-            android:layout_marginTop="4dp" />
+            android:text="Chọn thời gian kết thúc (optional)"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btnPickEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chọn thời gian kết thúc (optional)"
+            android:layout_marginTop="8dp" />
 
         <View
             android:layout_width="match_parent"
