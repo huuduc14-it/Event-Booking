@@ -1,6 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarPayment"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="@drawable/outline_arrow_back_ios_24"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/edit_text_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin đặt vé"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/tvBookingId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mã đặt vé: #123"
+            android:textSize="16sp"
+            android:textColor="#666"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền: 500,000đ"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#E91E63"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái: Chờ thanh toán"
+            android:textSize="16sp"
+            android:textColor="#FF9800"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btnPayVNPay"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Thanh toán qua VNPay"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1976D2"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnPayLater"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Thanh toán sau"
+            android:textSize="16sp"
+            android:textColor="#666"
+            android:backgroundTint="#E0E0E0"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnViewTickets"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Xem vé của tôi"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu ý: Vui lòng thanh toán trong vòng 24 giờ để giữ vé. Sau thời gian này, đơn đặt vé sẽ tự động hủy."
+        android:textSize="12sp"
+        android:textColor="#999"
+        android:padding="16dp"
+        android:gravity="center"/>
+
+</LinearLayout>

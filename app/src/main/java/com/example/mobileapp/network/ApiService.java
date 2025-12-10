@@ -178,4 +178,12 @@ public interface ApiService {
             @Field("ticket_type_id") int ticketTypeId,
             @Field("new_quantity") int newQuantity
     );
+
+    // Payment endpoints
+    @POST("api/payment/create")
+    @FormUrlEncoded
+    Call<okhttp3.ResponseBody> createPayment(
+            @Header("Authorization") String token,
+            @Field("bookingId") int bookingId
+    );
 }

@@ -8,6 +8,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -64,6 +65,8 @@
         <activity android:name=".ui.activity.OrganizerAttendeeListActivity" />
         <activity android:name=".ui.activity.OrganizerManageTicketActivity" />
         <activity android:name=".ui.activity.OrganizerEditEventActivity" />
+        <activity android:name=".ui.activity.PaymentActivity" />
+        <activity android:name=".ui.activity.BookingActivity" />
         
         <!-- Organizer App Activities -->
         <activity android:name=".ui.activity.OrganizerSplashActivity" />

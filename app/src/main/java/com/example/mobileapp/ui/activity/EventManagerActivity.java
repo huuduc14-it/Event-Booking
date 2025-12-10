@@ -142,13 +142,17 @@ public class EventManagerActivity extends AppCompatActivity {
                     boolean success = saveFileToDownloads(response.body(), "report_event_" + eventId + (type.equals("excel") ? ".xlsx" : ".pdf"));
                     if (success) {
                         Toast.makeText(EventManagerActivity.this, "Đã lưu vào thư mục Download", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(EventManagerActivity.this, "Lỗi: Không thể lưu file", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(EventManagerActivity.this, "Lỗi API: " + response.code() + " - " + response.message(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(EventManagerActivity.this, "Lỗi tải file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EventManagerActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
