@@ -196,7 +196,8 @@ public class EventManagerActivity extends AppCompatActivity {
             public void onResponse(Call<AttendeeResponse> call, Response<AttendeeResponse> response) {
                 if(response.isSuccessful() && response.body() != null) {
                     List<Attendee> list = response.body().data;
-                    AttendeeAdapter adapter = new AttendeeAdapter(list);
+                    AttendeeAdapter adapter = new AttendeeAdapter();
+                    adapter.setItems(list);
                     rvAttendees.setAdapter(adapter);
                 }
             }

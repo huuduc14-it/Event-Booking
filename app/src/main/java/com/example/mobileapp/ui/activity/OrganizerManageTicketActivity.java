@@ -62,7 +62,7 @@ public class OrganizerManageTicketActivity extends AppCompatActivity {
 			public void onResponse(Call<TicketTypeResponse> call, Response<TicketTypeResponse> response) {
 				progressBar.setVisibility(View.GONE);
 				if (response.isSuccessful() && response.body() != null && response.body().success) {
-					adapter.setItems(response.body().data);
+					adapter.setItems(response.body().data.toArray(new TicketTypeResponse.TicketType[0]));
 				} else {
 					showError("Không thể tải danh sách vé");
 				}
