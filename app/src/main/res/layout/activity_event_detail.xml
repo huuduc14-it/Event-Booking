@@ -9,10 +9,9 @@
     <!-- Nút mua vé nằm dưới cố định -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnBuy"
-        android:layout_marginBottom="26dp">
-
+        android:layout_height="match_parent">
+<!--        android:layout_above="@+id/btnBuy"-->
+<!--        android:layout_marginBottom="26dp">-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +90,46 @@
                         android:text="Địa điểm"
                         android:textSize="16sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/outline_location_on_24" />
+
+                    <TextView
+                        android:id="@+id/tvEventAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Địa chỉ chi tiết"
+                        android:textSize="14sp"
+                        android:textColor="#666" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvEventEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:paddingBottom="10dp"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#666" />
+
+                <TextView
+                    android:id="@+id/tvVideoUrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#2196F3"
+                    android:autoLink="web" />
                 <TextView
                     android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
@@ -119,6 +157,19 @@
                     android:text="Mô tả chi tiết..."
                     android:textColor="#444"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thời tiết"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/imgWeatherIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+
 
                 <View
                     android:layout_width="match_parent"

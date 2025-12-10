@@ -23,6 +23,17 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:id="@+id/btnCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tạo sự kiện"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#388E3C"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tvLogo"
+            android:layout_marginStart="20dp"/>
+
         <ImageView
             android:id="@+id/btnSearch"
             android:layout_width="26dp"
