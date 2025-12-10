@@ -64,6 +64,11 @@
         <activity android:name=".ui.activity.OrganizerAttendeeListActivity" />
         <activity android:name=".ui.activity.OrganizerManageTicketActivity" />
         <activity android:name=".ui.activity.OrganizerEditEventActivity" />
+        
+        <!-- Organizer App Activities -->
+        <activity android:name=".ui.activity.OrganizerSplashActivity" />
+        <activity android:name=".ui.activity.OrganizerLoginActivity" />
+        <activity android:name=".ui.activity.OrganizerProfileActivity" />
 
 
     </application>

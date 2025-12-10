@@ -75,7 +75,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Nút Đăng ký Organizer -->
+    <!-- ======================= CODE THAM KHẢO: NÚT ORGANIZER (ORGANIZER BRANCH) =======================
+    Nhánh Organizer sử dụng file riêng: activity_organizer_profile.xml và OrganizerProfileActivity.java
+    Các button dưới đây đã được comment lại, nhánh User có thể bỏ qua hoặc xóa hoàn toàn.
+    
     <Button
         android:id="@+id/btnRegisterOrganizer"
         android:layout_width="0dp"
@@ -90,7 +93,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Nút Quản lý sự kiện (chỉ hiện khi là Organizer) -->
     <Button
         android:id="@+id/btnManageEvents"
         android:layout_width="0dp"
@@ -105,6 +107,7 @@
         app:layout_constraintTop_toBottomOf="@id/btnRegisterOrganizer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    ========================================================================================= -->
 
     <!-- Nút Logout nằm dưới cùng -->
     <Button
