@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobileapp.R;
 import com.example.mobileapp.data.model.Attendee;
 import com.example.mobileapp.network.ApiService;
+import com.example.mobileapp.network.ApiResponse;
 import com.example.mobileapp.network.AttendeeResponse;
 import com.example.mobileapp.network.RetrofitClient;
-import com.example.mobileapp.network.SimpleResponse;
 import com.example.mobileapp.ui.adapter.AttendeeAdapter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -102,10 +102,13 @@ public class EventManagerActivity extends AppCompatActivity {
             RequestBody ticketTypePart = RequestBody.create(MediaType.parse("text/plain"), "1");
             RequestBody pricePart = RequestBody.create(MediaType.parse("text/plain"), "0");
 
+            // Lấy token từ SharedPreferences
+            String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+
             ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-            apiService.importAttendees(body, eventIdPart, ticketTypePart, pricePart).enqueue(new Callback<SimpleResponse>() {
+            apiService.importAttendees("Bearer " + token, body, eventIdPart, ticketTypePart, pricePart).enqueue(new Callback<ApiResponse>() {
                 @Override
-                public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(EventManagerActivity.this, "Import thành công!", Toast.LENGTH_SHORT).show();
                         loadAttendees();
@@ -115,7 +118,7 @@ public class EventManagerActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
                     Toast.makeText(EventManagerActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -127,9 +130,10 @@ public class EventManagerActivity extends AppCompatActivity {
     }
 
     private void downloadFile(String type) {
+        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
         Call<ResponseBody> call = type.equals("excel") ?
-                apiService.exportExcel(eventId) : apiService.exportPDF(eventId);
+                apiService.exportExcel("Bearer " + token, eventId) : apiService.exportPDF("Bearer " + token, eventId);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -185,8 +189,9 @@ public class EventManagerActivity extends AppCompatActivity {
     }
 
     private void loadAttendees() {
+        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-        apiService.getAttendees(eventId).enqueue(new Callback<AttendeeResponse>() {
+        apiService.getAttendees("Bearer " + token, eventId).enqueue(new Callback<AttendeeResponse>() {
             @Override
             public void onResponse(Call<AttendeeResponse> call, Response<AttendeeResponse> response) {
                 if(response.isSuccessful() && response.body() != null) {
